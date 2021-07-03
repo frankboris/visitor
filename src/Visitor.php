@@ -169,7 +169,7 @@ class Visitor implements UserAgentParser
      */
     public function platform_version() : string
     {
-        return Browser::platformName();
+        return Browser::platformVersion();
     }
 
     /**
