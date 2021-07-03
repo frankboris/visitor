@@ -20,9 +20,14 @@ class Visit extends Model
      */
     protected $fillable = [
         'method', 'request', 'url', 'referer',
-        'languages', 'useragent', 'headers',
-        'device', 'platform', 'platform_brand', 'platform_version', 'browser', 'ip',
-        'visitor_id', 'visitor_type',
+        'language', 'useragent', 'headers',
+        'device',
+        'platform',
+        'platform_version',
+        'browser',
+        'ip',
+        'visitor_id',
+        'visitor_type',
     ];
 
     /**
@@ -32,7 +37,6 @@ class Visit extends Model
      */
     protected $casts = [
         'request'   => 'array',
-        'languages' => 'array',
         'headers'   => 'array',
     ];
 

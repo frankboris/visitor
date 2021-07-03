@@ -28,7 +28,7 @@ interface UserAgentParser
     /**
      * Retrieve languages.
      *
-     * @return array
+     * @return string
      */
-    public function languages() : array;
+    public function language() : string;
 }

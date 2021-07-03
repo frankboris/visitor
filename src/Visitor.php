@@ -6,7 +6,6 @@ use Browser;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Shetabit\Visitor\Contracts\UserAgentParser;
-use Shetabit\Visitor\Exceptions\DriverNotFoundException;
 use Shetabit\Visitor\Models\Visit;
 
 class Visitor implements UserAgentParser
@@ -64,25 +63,7 @@ class Visitor implements UserAgentParser
         $this->request = $request;
         $this->config = $config;
         $this->except = $config['except'];
-        $this->via($this->config['default']);
         $this->setVisitor($request->user());
-    }
-
-    /**
-     * Change the driver on the fly.
-     *
-     * @param $driver
-     *
-     * @return $this
-     *
-     * @throws \Exception
-     */
-    public function via($driver)
-    {
-        $this->driver = $driver;
-        $this->validateDriver();
-
-        return $this;
     }
 
     /**
@@ -164,7 +145,7 @@ class Visitor implements UserAgentParser
      */
     public function device() : string
     {
-        return $this->getDriverInstance()->device();
+        return Browser::deviceFamily();
     }
 
     /**
@@ -176,19 +157,7 @@ class Visitor implements UserAgentParser
      */
     public function platform() : string
     {
-        return Browser::platformName();
-    }
-
-    /**
-     * Retrieve platform's name.
-     *
-     * @return string
-     *
-     * @throws \Exception
-     */
-    public function platform_brand() : string
-    {
-        return Browser::deviceModel();
+        return Browser::platformFamily();
     }
 
     /**
@@ -218,13 +187,13 @@ class Visitor implements UserAgentParser
     /**
      * Retrieve languages.
      *
-     * @return array
+     * @return string
      *
      * @throws \Exception
      */
-    public function languages() : array
+    public function language() : string
     {
-        return $this->getDriverInstance()->languages();
+        return $this->request->getLocale();
     }
 
     /**
@@ -320,73 +289,16 @@ class Visitor implements UserAgentParser
             'request' => $this->request(),
             'url' => $this->url(),
             'referer' => $this->referer(),
-            'languages' => $this->languages(),
+            'language' => $this->language(),
             'useragent' => $this->userAgent(),
             'headers' => $this->httpHeaders(),
             'device' => $this->device(),
             'platform' => $this->platform(),
-            'platform_brand' => $this->platform_brand(),
             'platform_version' => $this->platform_version(),
             'browser' => $this->browser(),
             'ip' => $this->ip(),
             'visitor_id' => $this->getVisitor() ? $this->getVisitor()->id : null,
             'visitor_type' => $this->getVisitor() ? get_class($this->getVisitor()): null
         ];
-    }
-
-    /**
-     * Retrieve current driver instance or generate new one.
-     *
-     * @return mixed|object
-     *
-     * @throws \Exception
-     */
-    protected function getDriverInstance()
-    {
-        if (!empty($this->driverInstance)) {
-            return $this->driverInstance;
-        }
-
-        return $this->getFreshDriverInstance();
-    }
-
-    /**
-     * Get new driver instance
-     *
-     * @return Driver
-     *
-     * @throws \Exception
-     */
-    protected function getFreshDriverInstance()
-    {
-        $this->validateDriver();
-
-        $driverClass = $this->config['drivers'][$this->driver];
-
-        return app($driverClass);
-    }
-
-    /**
-     * Validate driver.
-     *
-     * @throws \Exception
-     */
-    protected function validateDriver()
-    {
-        if (empty($this->driver)) {
-            throw new DriverNotFoundException('Driver not selected or default driver does not exist.');
-        }
-
-        $driverClass = $this->config['drivers'][$this->driver];
-
-        if (empty($driverClass) || !class_exists($driverClass)) {
-            throw new DriverNotFoundException('Driver not found in config file. Try updating the package.');
-        }
-
-        $reflect = new \ReflectionClass($driverClass);
-
-        if (!$reflect->implementsInterface(UserAgentParser::class)) {
-            throw new \Exception("Driver must be an instance of Contracts\Driver.");
-        }
     }
 }
