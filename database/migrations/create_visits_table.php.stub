@@ -24,6 +24,8 @@ class CreateVisitsTable extends Migration
             $table->text('headers')->nullable();
             $table->text('device')->nullable();
             $table->text('platform')->nullable();
+            $table->text('platform_brand')->nullable();
+            $table->text('platform_version')->nullable();
             $table->text('browser')->nullable();
             $table->ipAddress('ip')->nullable();
             $table->nullableMorphs('visitable'); // object model

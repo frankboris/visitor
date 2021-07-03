@@ -54,6 +54,26 @@ class JenssegersAgent implements UserAgentParser
     }
 
     /**
+     * Retrieve platform's name.
+     *
+     * @return string
+     */
+    public function platform_brand() : string
+    {
+        return $this->parser->platform_brand();
+    }
+
+    /**
+     * Retrieve platform's name.
+     *
+     * @return string
+     */
+    public function platform_version() : string
+    {
+        return $this->parser->platform_version();
+    }
+
+    /**
      * Retrieve browser's name.
      *
      * @return string

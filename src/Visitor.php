@@ -179,6 +179,30 @@ class Visitor implements UserAgentParser
     }
 
     /**
+     * Retrieve platform's name.
+     *
+     * @return string
+     *
+     * @throws \Exception
+     */
+    public function platform_brand() : string
+    {
+        return $this->getDriverInstance()->platform_brand();
+    }
+
+    /**
+     * Retrieve platform's name.
+     *
+     * @return string
+     *
+     * @throws \Exception
+     */
+    public function platform_version() : string
+    {
+        return $this->getDriverInstance()->platform_version();
+    }
+
+    /**
      * Retrieve browser's name.
      *
      * @return string
@@ -236,7 +260,7 @@ class Visitor implements UserAgentParser
         $data = $this->prepareLog();
         if(in_array($this->request->path(),$this->except)){
             unset($data['request']);
-        }  
+        }
 
         if (method_exists($model, 'visitLogs')) {
             $visit = $model->visitLogs()->create($data);
@@ -300,6 +324,8 @@ class Visitor implements UserAgentParser
             'headers' => $this->httpHeaders(),
             'device' => $this->device(),
             'platform' => $this->platform(),
+            'platform_brand' => $this->platform_brand(),
+            'platform_version' => $this->platform_version(),
             'browser' => $this->browser(),
             'ip' => $this->ip(),
             'visitor_id' => $this->getVisitor() ? $this->getVisitor()->id : null,

@@ -56,6 +56,26 @@ class UAParser implements UserAgentParser
     }
 
     /**
+     * Retrieve platform's name.
+     *
+     * @return string
+     */
+    public function platform_brand() : string
+    {
+        return $this->parser->os->family;
+    }
+
+    /**
+     * Retrieve platform's name.
+     *
+     * @return string
+     */
+    public function platform_version() : string
+    {
+        return $this->parser->os->family;
+    }
+
+    /**
      * Retrieve browser's name.
      *
      * @return string

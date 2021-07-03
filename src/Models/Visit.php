@@ -21,7 +21,7 @@ class Visit extends Model
     protected $fillable = [
         'method', 'request', 'url', 'referer',
         'languages', 'useragent', 'headers',
-        'device', 'platform', 'browser', 'ip',
+        'device', 'platform', 'platform_brand', 'platform_version', 'browser', 'ip',
         'visitor_id', 'visitor_type',
     ];
 
