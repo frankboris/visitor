@@ -2,6 +2,7 @@
 
 namespace Shetabit\Visitor;
 
+use Browser;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Shetabit\Visitor\Contracts\UserAgentParser;
@@ -175,7 +176,7 @@ class Visitor implements UserAgentParser
      */
     public function platform() : string
     {
-        return $this->getDriverInstance()->platform();
+        return Browser::platformName();
     }
 
     /**
@@ -187,7 +188,7 @@ class Visitor implements UserAgentParser
      */
     public function platform_brand() : string
     {
-        return $this->getDriverInstance()->platform_brand();
+        return Browser::deviceModel();
     }
 
     /**
@@ -199,7 +200,7 @@ class Visitor implements UserAgentParser
      */
     public function platform_version() : string
     {
-        return $this->getDriverInstance()->platform_version();
+        return Browser::platformVersion();
     }
 
     /**
@@ -211,7 +212,7 @@ class Visitor implements UserAgentParser
      */
     public function browser() : string
     {
-        return $this->getDriverInstance()->browser();
+        return Browser::browserFamily();
     }
 
     /**
