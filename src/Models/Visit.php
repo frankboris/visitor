@@ -26,6 +26,8 @@ class Visit extends Model
         'platform_version',
         'browser',
         'ip',
+        'country',
+        'city',
         'visitor_id',
         'visitor_type',
     ];
